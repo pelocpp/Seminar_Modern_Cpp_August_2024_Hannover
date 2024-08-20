@@ -14,6 +14,9 @@ concept NumericalEx = std::is_integral<T>::value || std::is_floating_point<T>::v
 
 namespace Requires_Clause {
 
+    // reagierendes Verhalten :(
+    // proaktives Verhalten
+
     template <typename T>
         requires Numerical<T>
     auto add(T a, T b)
@@ -48,7 +51,7 @@ namespace Requires_Clause {
         //    the concept 'Numerical<std::string>' evaluated to false
         //    the concept 'std::floating_point<std::string>' evaluated to false
         //    the concept 'std::integral<std::string>' evaluated to false
-        // auto sum4 = add(std::string { "ABC" }, std::string { "DEF" });
+       // auto sum4 = add(std::string { "ABC" }, std::string { "DEF" });
     }
 
     // ---------------------------------------------------------------------------------
@@ -175,6 +178,11 @@ namespace Constrained_Template_Parameters {
 namespace Abbreviated_Function_Templates {
 
     static auto add(Numerical auto a, Numerical auto b)
+    {
+        return a + b;
+    }
+
+    static int add(int a, int b)
     {
         return a + b;
     }

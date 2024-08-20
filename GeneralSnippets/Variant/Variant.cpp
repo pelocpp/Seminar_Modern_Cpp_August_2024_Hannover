@@ -96,13 +96,78 @@ namespace VariantDemo {
 
     // -------------------------------------------------------------------
 
+    // primary template
+    template <class T>
+    struct my_remove_reference
+    {
+        using mytype = T;
+    };
+
+    // T == short // Template Specialization
+    template <>
+    struct my_remove_reference<short>
+    {
+        using mytype = short;  // ist ja nur ein Beispiel
+    };
+
+    // T ist eine Referenz
+    template <class T>
+    
+    struct my_remove_reference<T&> {
+        using mytype = T;
+    };
+
+
+
+
+
     static void test_03() {
+
+        using BaseType = int;
+
+        std::vector<BaseType> numbers;
+
+        std::vector<BaseType>::value_type eineNumber;
+
+        std::vector<BaseType>::reference rNum = eineNumber;
+
+        std::vector<BaseType>::iterator pos;
+
+        // ==============================
 
         std::variant<int, double, std::string> var{ 123 };
 
         // using a generic visitor (matching all types in the variant)
-        auto visitor = [](const auto& elem) {
-            std::cout << elem << std::endl;
+        auto visitor = [] (const auto& elem) {
+
+            using ElemType = decltype (elem);
+
+            using ElemTypeWithoutRef =
+                my_remove_reference<ElemType>::mytype;
+
+            //using ElemTypeWithoutRef = 
+            //    std::remove_reference<ElemType>::type;
+
+            using ElemTypeWithoutRefAndConst =
+                std::remove_const<ElemTypeWithoutRef>::type;
+
+            if constexpr (std::is_same<ElemTypeWithoutRefAndConst, int>::value == true)
+            {
+                std::cout << "int: " << elem << std::endl;
+            }
+            else if constexpr (std::is_same<ElemTypeWithoutRefAndConst, double>::value == true)
+            {
+                std::cout << "double: " << elem << std::endl;
+            }
+            else if constexpr (std::is_same<ElemTypeWithoutRefAndConst, std::string>::value == true)
+            {
+                std::cout << "std::String: " << elem << std::endl;
+                std::cout << "Length: " << elem.size() << std::endl;
+            }
+            else
+            {
+                std::cout << "Unbekannt." << std::endl;
+            }
         };
 
         std::visit(visitor, var);
@@ -127,7 +192,7 @@ namespace VariantDemo {
             std::cout << "double: " << f << std::endl;
         }
 
-        void operator() (std::string s) {
+        void operator() (std::string& s) {
             std::cout << "std::string: " << s << std::endl;
         }
     };
@@ -154,10 +219,17 @@ namespace VariantDemo {
         std::vector<std::variant<int, long, long long, float, double>>
             vec = { 100, 200l, 300ll, 400.5f, 500.5 };
 
+
+
         // display each value
         std::cout << "Values:      ";
+
         for (const auto& var : vec) {
-            std::visit([](const auto& n) { std::cout << n << " "; }, var);
+            std::visit(
+                [](const auto& n) {
+                   std::cout << n << " "; },
+                   var
+                );
         }
         std::cout << std::endl;
 
@@ -239,13 +311,13 @@ namespace VariantDemo {
 void main_variant()
 {
     using namespace VariantDemo;
-    test_01();
-    test_02();
-    test_03();
-    test_04();
+    //test_01();
+    //test_02();
+    //test_03();
+    //test_04();
     test_05();
-    test_06();
-    test_07();
+    //test_06();
+    //test_07();
 }
 
 // =====================================================================================

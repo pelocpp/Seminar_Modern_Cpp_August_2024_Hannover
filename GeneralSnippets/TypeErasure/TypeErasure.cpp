@@ -270,6 +270,7 @@ namespace BookStoreUsingDynamicPolymorphism {
         // getter / setter
         std::string getTitle() const { return m_title; }
         std::string getDirector() const { return m_director; }
+        
         double getPrice() const { return m_price; }
         size_t getCount() const { return m_count; }
     };
@@ -278,6 +279,7 @@ namespace BookStoreUsingDynamicPolymorphism {
     {
     private:
         using Stock = std::vector<std::shared_ptr<IMedia>>;
+        
         using StockList = std::initializer_list<std::shared_ptr<IMedia>>;
 
     public:
@@ -292,7 +294,8 @@ namespace BookStoreUsingDynamicPolymorphism {
             double total{};
 
             for (const auto& media : m_stock) {
-                total += media->getPrice() * media->getCount();
+                
+                total += media -> getPrice() * media->getCount();
             }
 
             return total;
@@ -303,7 +306,8 @@ namespace BookStoreUsingDynamicPolymorphism {
             size_t total{};
 
             for (const auto& media : m_stock) {
-                total += media->getCount();
+                
+                total += media -> getCount();
             }
 
             return total;
@@ -323,7 +327,8 @@ namespace BookStoreUsingDynamicPolymorphism {
         std::shared_ptr<IMedia> movieTarantino{ std::make_shared<Movie>("Once upon a time in Hollywood", "Quentin Tarantino", 6.99, 3) };
         std::shared_ptr<IMedia> movieBond{ std::make_shared<Movie>("Spectre", "Sam Mendes", 8.99, 6) };
 
-        Bookstore bookstore{
+        Bookstore bookstore
+        {
             cBook, movieBond, javaBook, cppBook, csharpBook, movieTarantino
         };
 
@@ -404,7 +409,7 @@ namespace BookStoreUsingDynamicPolymorphism {
 
 namespace BookStoreUsingTypeErasure {
 
-    class Book
+    class Book // KEINE BASISKLASSE
     {
     private:
         std::string m_author;
@@ -424,7 +429,7 @@ namespace BookStoreUsingTypeErasure {
         size_t getCount() const { return m_count; }
     };
 
-    class Movie
+    class Movie  // KEINE BASISKLASSE
     {
     private:
         std::string m_title;
@@ -445,28 +450,32 @@ namespace BookStoreUsingTypeErasure {
     };
 
     template<typename T>
-    concept MediaConcept = requires (const T & m)
+    concept MediaConcept = requires (const T& m)
     {
         { m.getPrice() } -> std::same_as<double>;
         { m.getCount() } -> std::same_as<size_t>;
     };
 
     template <typename ... TMedia>
+
         requires (MediaConcept<TMedia> && ...)
+    
     class Bookstore
     {
     private:
         using StockType = std::variant<TMedia ...>;
-        using Stock = std::vector<StockType>;
+        
+        using Stock = std::vector<std::variant<TMedia ...>>;
+        
         using StockList = std::initializer_list<StockType>;
 
     public:
         explicit Bookstore(StockList stock) : m_stock{ stock } {}
 
-        // template member method
+        // template member method // T Book Movie
         template <typename T>
         void addMedia(const T& media) {
-            // m_stock.push_back(StockType{ media });  // ausführliche Schreibweise
+           // m_stock.push_back(StockType{ media });  // ausführliche Schreibweise
             m_stock.push_back(media);
         }
 

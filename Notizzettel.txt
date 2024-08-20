@@ -374,3 +374,107 @@ Ausnahme: new
 
 int n = 40;
 int numbers[n];  // NEIN // C99
+
+
+==========================================
+
+auto:
+
+a) Vereinbarung von Variablen
+
+b) Rückgabetyp
+
+c) Vereinbarung von Parametern
+
+
+==========================================
+
+Was ist ein Variant?
+
+Objekte des Typs Variant können Daten unterschiedlichen
+Typs ausnehmen ... zu einem Zeitpunkt nur einen.
+
+Beispiel: MS Excel, Google Sheets:
+
+Zelle, Cell:  Zeichenkette, Datum, Currency, Zahlen, ...
+
+Games Programming:
+
+   Spielebrett: Board:  Figur Pro Spielfeldeintrag
+                        eine andere Figur.
+
+======================================
+
+std::variant<int, double, std::string> 
+
+std::any  : Sehr ähnlich.
+
+======================================
+
+Container:
+
+STL:
+
+std::vector<int>
+
+==> Homogene Container
+
+==> Heterogene Container
+
+a) Ginge mit Zeigern
+
+   Virtuell:  Kostet Laufzeit
+
+b) std::variant
+
+   Daten
+
+   Funktionen  ==> std::visit
+
+
+A) Virtuell // Polymorphismus
+
+B) Non-Virtuell // Statischer // Statischer Polymorphismus
+
+===>  std::variant     ===> Type Erasure
+
+Beispiel einer Schnittstelle mit Concept:
+
+template <typename T, typename U>
+concept GenericIsIterable = requires(T v)
+{
+    { std::as_const(v).hasNext() } -> std::convertible_to<bool>;
+    { v.next() } -> std::same_as<U>;
+    { v.reset() }-> std::convertible_to<void>;
+};
+
+=============================================
+
+Optimierung von arithmetischen Ausdrücken
+desselben Operators:
+
+
+// Ohne Folding
+
+auto result = 1 + 2 + 3 + 4 + 5 + 6 + 7;
+
+// Mit Folding:
+
+auto add (auto ... args)
+{
+   return  (... + args);
+}
+
+
+((pack1 op pack2) op ...) op packN
+
+Bei uns:
+
+((args1 + args2) + ...) + argsN
+
+Folding: (... + args)
+
+=============================================
+
+Modulkonzept:
+

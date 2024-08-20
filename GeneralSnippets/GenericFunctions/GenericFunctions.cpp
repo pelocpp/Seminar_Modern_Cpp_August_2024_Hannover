@@ -9,12 +9,17 @@ namespace GenericFunctions {
 
     // -------------------------------------------------------------------
 
-    static auto function(auto x, int y) {
+    void function (auto x, int y) {
         std::cout << "x=" << x << ", y=" << y << std::endl;
     };
 
+
     static void test_01()
     {
+        //void function(auto x, int y) {
+        //    std::cout << "x=" << x << ", y=" << y << std::endl;
+        //};
+
         function(1, 100);
         function(2.5, 101);
         function(std::string{ "ABC" }, 102);
@@ -67,13 +72,15 @@ namespace GenericFunctions {
     // -------------------------------------------------------------------
 
     // define a generic function (top-level (!))
-    static bool isGreaterThanFifty(const auto& n) { return n > 50; };
+    static bool isGreaterThanFifty(const auto& n) {
+        return n > 50; 
+    };
 
     static void test_04()
     {
         std::vector<int> intValues{ 44, 65, 22, 77, 2 };
 
-        // use generic lambda with a vector of integers
+        // use generic function with a vector of integers
         auto it1 = std::find_if(
             intValues.begin(),
             intValues.end(),
@@ -85,7 +92,7 @@ namespace GenericFunctions {
 
         std::vector<double> doubleValues{ 24.5, 75.5, 12.5, 87.5, 12.5 };
 
-        // use exactly the *same* generic lambda with a vector of doubles
+        // use exactly the *same* generic function with a vector of doubles
         auto it2 = std::find_if(
             doubleValues.begin(),
             doubleValues.end(),
@@ -101,7 +108,7 @@ namespace GenericLambdas {
 
     // -------------------------------------------------------------------
 
-    auto lambda = [](auto x, int y) {
+    auto lambda = [] (auto x, int y) {
         std::cout << "x=" << x << ", y=" << y << std::endl;
     };
 
@@ -158,10 +165,17 @@ namespace GenericLambdas {
 
     // -------------------------------------------------------------------
 
+    //// define a generic lambda
+    //    auto isGreaterThanFifty = [](const auto& n) {
+    //    return n > 50;
+    //};
+
     static void test_04()
     {
         // define a generic lambda
-        auto isGreaterThanFifty = [](const auto& n) { return n > 50; };
+        auto isGreaterThanFifty = [](const auto& n) {
+            return n > 50; 
+        };
 
         std::vector<int> intValues{ 44, 65, 22, 77, 2 };
 

@@ -23,7 +23,7 @@ int main()
         //main_any();
         //main_apply();  
         //main_argument_dependent_name_lookup();
-        main_array();
+       // main_array();
         //main_array_decay();
         //main_attributes();
         //main_auto();
@@ -47,7 +47,7 @@ int main()
         //main_exercises();
         //main_expression_templates();
         //main_generate();
-        //main_generic_functions();
+     //   main_generic_functions();
         //main_exception_safety();
         //main_explicit_keyword();
         //main_folding();
@@ -95,14 +95,14 @@ int main()
         //main_trim(); 
      //   main_tuple(); 
         //main_two_phase_name_lookup();
-        //main_type_erasure();
+    //    main_type_erasure();
         //main_type_traits();
        // main_unique_ptr();
         // main_variadic_templates_introduction();
         //main_variadic_templates_working_on_every_argument();
         //main_variadic_templates_sum_of_sums();
         //main_variadic_templates_mixins();
-        //main_variant();
+     //   main_variant();
         //main_virtual_base_class_destructor();
         //main_virtual_override_final();
        // main_weak_pointer();
