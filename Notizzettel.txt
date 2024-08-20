@@ -1,0 +1,231 @@
+// ===========================================================
+
+Modernes C++
+
+Guten Morgen
+
+Peter Loos
+
+https://github.com/pelocpp
+
+https://github.com/pelocpp/cpp_modern
+
+peter.loos@gmx.de
+
+// ===========================================================
+
+C++
+
+== Referenz-basiert (Heap)
+== Value-basiert (Stack)
+
+
+C#,  Java, TypeScript / JavaScript
+
+== Referenz-basiert (Heap)
+
+===============================================
+
+Move-Semantik:
+
+...: 70    // temp. Stack  // wird jetzt freigegeben
+...: 40
+
+...: A0
+
+std::string s;
+
+// ..........
+
+s = "ABC";
+
+// move ...
+
+s.size();
+
+s = s2;
+
+Verboten:  s[0] = '1';
+
+// =========================================
+
+Ist noexcept vorgeschrieben:
+
+NEIN.
+
+Gehört es zur Signatur (Schnittstelle): JA.
+
+Kann es Auswirkungen geben mit / ohne noexcept:
+
+a) std::vector
+
+b) Speicher nicht mehr ausreicht:
+
+   "er vergrößert sich"
+
+   ==> umkopieren :-))))
+
+   ==> umschieben // um verschieben // Move-Semantik
+
+c) std::exception:  Exception Garantie
+
+d) 
+
+   ==> umkopieren :-((( KEIN noexcept
+
+   ==> um verschieben // noexcept
+
+================================================
+
+C++
+
+Weiterentwicklung // Idiome
+
+-- Objektorientierte Programmierung
+
+-- Generische Programmierung (Templates)
+
+-- Funktionale Programmierung 
+
+-- Concept und Requirement
+
+-- "Type Traits"
+
+
+============================================
+
+Lambda:
+
+"Historisch"
+
+Lambda ==> Funktionen
+
+Vorsicht: Lambdas sind OBJEKTE !!!!
+
+Grundlage:
+
+Was ist ein "aufrufbares Objekt" ? (Funktor)
+
+Objekte einer Klasse in C++, die den operator()
+
+implementiert, nennt man "aufrufbar".
+
+===============================================
+
+STL:   Building Block
+
+
+============================================
+
+std::vector:             Heap
+
+std::initializer_list:   Stack
+
+============================================
+
+std::vector<int> vec1 { 10 };   // Size: 1, 10
+
+std::vector<int> vec2 ( 10 );   // Size: 10, mit 0 vorbelegt
+
+============================================
+
+Shared Pointer:
+===============
+
+Was ist das Problem ???
+
+int* ptr;
+
+ptr = new int [100];
+
+// ...........
+
+Wer und wann ruft delete ???????????
+
+Todesmarsch
+
+Death March
+
+Idee:   // RAII
+
+a) Es gibt OO / Klassen und Objekte
+
+b) Konstuktoren
+   Destruktoren
+
+c) Wann wird ein Destruktor aufgerufen?
+
+   Am Ende der Methode / Out of Scope
+
+   Deterministisch.
+
+d) Man verwende für einen Zeiger eine HÜLLENKLASSE:
+
+   Konstuktor ==> new // Zeiger übergeben
+   Destruktor ==> delete
+
+e) auto_ptr  deprecated
+
+f) std::unique_ptr
+   std::shared_ptr ( std::weak_ptr )
+
+g) Wie unterscheiden diese sich?
+
+Strategie:  std::unique_ptr
+
+Ein std::unique_ptr-Objekt hat zu EINEM Zeitpunkt
+im Programm NUR EINEN BESITZER !!!
+
+Man kann es NICHT Kopieren
+Man kann es VERSCHIEBEN
+
+
+Strategie:  std::shared_ptr
+
+Ein std::shared_ptr-Objekt hat zu EINEM Zeitpunkt
+im Programm MEHRERE BESITZER !!!
+
+===============================================
+
+Wollen wir Smart Pointer verwenden ???
+
+"Es ist alles sicherer"
+
+Naheliegendere Smart Pointer:  Unique Ptr
+
+Viele Ähnlichkeiten mit einem regulären Zeiger:
+
+Raw Pointer
+
+==> Frage des Besitztes.
+
+std::shared_ptr:  Funktioniert nicht immer :-(
+
+Fazit:
+======
+
+Neue Entwicklung / Neues Modul
+
+a) std::unique_ptr
+
+b) std::shared_ptr
+
+   ===> Nur in Kombination mit std::weak_ptr
+
+   i) Will ich wirklich der BESITZER sein: std::shared_ptr
+
+   i) Benötige ich temporären Zugriff auf das Objekt:
+   
+      Zum Zeichen
+      Zum Benachrichtigen
+
+      std::weak_ptr   
+
+      Kann auch sein, dass es das Objekt gar nicht mehr gibt.
+
+======================================
+
+constexpr
+
+int x = 3 + 5;   // 8
+
