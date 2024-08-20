@@ -6,10 +6,132 @@ module modern_cpp:variadic_templates;
 
 namespace VariadicTemplatesSeminar {
 
+    // C++ 11
+
+    template <typename T>
+    void printer(T n)
+    {
+        std::cout << n << std::endl;
+    }
+
+    template <typename T, typename ... U> // einpacken
+    void printer(T n, U ... m)            // einpacken
+    {
+        std::cout << n << std::endl;
+        printer(m ...);                   // auspacken
+    }
+
+    // C++ 17
+
+    template <typename T, typename ... TArgs> // einpacken
+    void printerEx(T n, TArgs ... m)            // einpacken
+    { 
+        std::cout << n << std::endl;
+
+        if constexpr (sizeof ... (m) != 0)
+        {
+            printerEx(m ...);
+        }
+    }
+
+    void test_02() {
+
+        printerEx<>(1, 2, 3);
+    }
+
+    class Unknown {
+    private:
+        int m_var1;
+        int m_var2;
+        int m_var3;
+
+    public:
+        Unknown(const Unknown& other)
+            : m_var1{ other.m_var1 }, m_var2{ other.m_var2 }, m_var3{ other.m_var3 } {
+            std::cout << "copy 'tor()" << std::endl;
+        }
+
+        Unknown(Unknown&& other) noexcept
+            : m_var1{ other.m_var1 }, m_var2{ other.m_var2 }, m_var3{ other.m_var3 } {
+            std::cout << "move 'tor()" << std::endl;
+        }
+
+        Unknown() : m_var1{ -1 }, m_var2{ -1 }, m_var3{ -1 } {
+            std::cout << "c'tor()" << std::endl;
+        }
+
+        Unknown(int n) : m_var1{ n }, m_var2{ -1 }, m_var3{ -1 } {
+            std::cout << "c'tor(int)" << std::endl;
+        }
+
+        Unknown(int n, int m) : m_var1{ n }, m_var2{ m }, m_var3{ -1 } {
+            std::cout << "c'tor(int, int)" << std::endl;
+        }
+
+        Unknown(int n, int m, int k) : m_var1{ n }, m_var2{ m }, m_var3{ k } {
+            std::cout << "c'tor(int, int, int)" << std::endl;
+        }
+
+        friend std::ostream& operator<< (std::ostream&, const Unknown&);
+    };
+
+    std::ostream& operator<< (std::ostream& os, const Unknown& obj) {
+        os
+            << "var1: " << obj.m_var1
+            << ", var2: " << obj.m_var2
+            << ", var3: " << obj.m_var3 << std::endl;
+
+        return os;
+    }
+
+    template <typename T, typename ... TArgs>
+    auto my_make_unique(TArgs ... args) {
+
+        std::unique_ptr<T> tmp{ new T{ args ... } };
+        return tmp;
+    }
+
+    template <typename T, typename ... TArgs>
+    auto my_make_uniqueEx(TArgs&& ... args) {
+
+        std::unique_ptr<T> tmp{ new T{ std::forward<TArgs> (args) ... } };
+        return tmp;
+    }
+
+    void test_01() {
+
+        std::unique_ptr<Unknown> up 
+            = std::make_unique<Unknown>(1, 2, 3);
+
+        std::unique_ptr<Unknown> up2
+            = my_make_uniqueEx<Unknown>(1, 2);
+    }
+
+    void test_03() {
+
+        std::vector<Unknown> vec;
+        // vec.reserve(10);
+
+        vec.push_back(Unknown{ 1, 2, 3 });
+        vec.push_back(Unknown{ 4, 5, 6 });
+    }
+
     void test() {
 
+        std::vector<Unknown> vec;
+
+        vec.emplace_back(1, 2, 3);
+        vec.emplace_back(4, 5, 6);
     }
 }
+
+
+
+
+
+
+
+
 
 namespace VariadicTemplatesIntro_01 {
 

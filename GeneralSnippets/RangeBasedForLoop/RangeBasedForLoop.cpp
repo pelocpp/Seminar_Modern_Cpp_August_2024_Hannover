@@ -39,7 +39,7 @@ namespace RangeBasedForLoop {
         }
         std::cout << std::endl;
 
-        // b) Looks like C++, very classic style
+        // b) Looks like C++, very classic style // STL
         std::for_each(
             vec.begin(),                   // Iterator-object for begin of range
             vec.end(),                     // Iterator-object for end of range
@@ -128,10 +128,18 @@ namespace RangeBasedForLoop {
 
         // l) Range-based 'for' loop with initializer,
         // we can now use the index variable inside the for statement
-        for (int index{}; int n : vec) {
+        for (int index{} ; int n : vec) {
             std::cout << index << ": " << n << " " << std::endl;
             ++index;
         }
+
+      //  index = 100;
+
+        if (int n = 100; n > 50) {
+            std::cout << "bin hier";
+        }
+
+       // n = 100;
     }
 }
 

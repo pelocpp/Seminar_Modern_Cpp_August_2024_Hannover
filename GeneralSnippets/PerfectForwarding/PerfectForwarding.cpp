@@ -24,6 +24,7 @@ namespace PerfectForwarding {
     }
 
     template <typename T>
+    
     void forwardingPerfect(T&& arg) {
         overloaded(std::forward<T>(arg));
     }
@@ -49,13 +50,14 @@ namespace PerfectForwarding {
     // =================================================================================
 
     template <typename T, typename U>
+    
     void foo(T&& arg1, U&& arg2)
     {
         // Beobachte den Inhalt der beiden Parameter 'arg1' und 'arg2'
 
-        // T obj1 = std::forward<T>(arg1);
+        T obj1 = std::forward<T>(arg1);
         // vs
-        T obj1 = arg1;
+        // T obj1 = arg1;
         std::cout << arg1 << std::endl;
 
         T obj2 = std::forward<U>(arg2);
@@ -67,17 +69,18 @@ namespace PerfectForwarding {
         using namespace std::string_literals;
 
         std::string s{ "DEF" };
+
         std::cout << s << std::endl;
 
-        foo(std::string{ "ABC" }, s);
+        foo (std::string{ "ABC" }, s);
     }
 }
 
 void main_perfect_forwarding()
 {
     using namespace PerfectForwarding;
-    test_forwarding();
-    test_forwardingPerfect();
+    //test_forwarding();
+    //test_forwardingPerfect();
     test_example();
 }
 

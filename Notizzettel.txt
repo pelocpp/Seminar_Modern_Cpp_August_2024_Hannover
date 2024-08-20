@@ -12,6 +12,8 @@ https://github.com/pelocpp/cpp_modern
 
 peter.loos@gmx.de
 
+https://peterloos.de
+
 // ===========================================================
 
 C++
@@ -229,3 +231,146 @@ constexpr
 
 int x = 3 + 5;   // 8
 
+======================================
+
+Code Bloat
+
+======================================
+
+Cpp Insights
+
+Variadische Templates: Why ??????????????????????????
+
+a) viele make_xxx Funktionen
+
+b) Thread-Prozeduren
+
+c) emplace-Technik
+
+=========================================
+
+std::optional
+
+int value;
+
+value = 0;
+
+value = -1;
+
+value = - MAX_INT;
+
+int  value;
+bool isValid;
+
+===> std::optional
+
+C#:
+
+int   value;
+
+int?  value;   //  std::optional
+
+C#:
+
+Value_Type
+Reference_Type
+
+CTS: Common Type System
+
+"Everything is an object"
+
+====================================================
+
+std::tuple <char, int, double> moreValues 
+{
+    'Z', 987, 987.654 
+};
+
+Ähnlichkeit:
+
+Zu einer Struktur für Schreibfaule
+
+DTO:  Data Transfer Objects
+
+====================================================
+
+Structured Binding
+
+
+====================================================
+
+Arrays in C++:
+
+a) int numbers[10];
+
+b) std::array<int, 10> numbers;
+
+Es gibt Pros für std::array
+
+
+i) C-Style Array: Falscher Index:
+
+   Verhalten: UB
+
+   Dennis Ritchie: "A programmer knows what he does"
+
+i) std:array: Zugriff : 
+
+   a) mit at: Exception geworfen
+   b) mit []: Falscher Index: UB
+
+
+
+2 Pros:
+
+Arrays vergleichen
+Arrays als Rückgabewert von Funktionen
+
+std::span    
+
+Helfer:  C-Style Array, std::array, std::vector
+
+
+std::string_view
+
+
+
+
+
+CTAD: Class Template Argument Deduction
+
+Arrays als Parameter:
+
+
+ int numbers[10];
+
+
+ void function (int* ptr);
+
+ function (numbers);   // array decay 
+
+
+ void function (int* ptr, int len);
+
+ function (numbers, 10);
+
+
+
+
+Funktionell: IDENTISCH - Fixed-Size Speicherbereich.
+
+c) std::vector
+
+Wie ein Array, nur KEINE FESTE LÄNGE !!!
+
+Daten auf dem Heap
+
+Array: Auf dem Stack
+
+Ausnahme: new
+
+==========================================
+
+
+int n = 40;
+int numbers[n];  // NEIN // C99

@@ -78,13 +78,22 @@ namespace TupleSamples {
     // =======================================================
     // same example, but using C++ 17 structured binding
 
+    using Row1 = std::tuple<int, char, double, std::string>;
+
     static void test_03()
     {
         Row row1 = std::make_tuple(10, 'A', 1.11, "Mueller");
         Row row2 = std::make_tuple(11, 'B', 2.22, "Sepp");
         Row row3 = std::make_tuple(12, 'C', 3.33, "Hans");
 
+        //myMap[key] = value;
+
+        //std::pair p{ key, value };
+        //myMap.insert(p);
+
         std::vector<Row> mySheet;
+
+   //     mySheet.emplace_back(10, 'A', 1.11, "Mueller");
 
         mySheet.push_back(row1);
         mySheet.push_back(row2);
@@ -99,6 +108,7 @@ namespace TupleSamples {
             << "Value: " << val << std::endl
             << "Name:  " << name << std::endl;
 
+        // C++ 17
         for (const auto& [id, abbr, val, name] : mySheet) {
 
             std::cout 
@@ -121,17 +131,20 @@ namespace TupleSamples {
         mySheet.push_back(row2);
         mySheet.push_back(row3);
 
-        // C++ 14: std::tie
+        // C++ 14:  std::tie
         int id{};
         char abbr{};
         double val{};
         std::string name{};
 
+        // C++ 17: structured binding - Zum Vergleich
+        const auto& [id2, abbr2, val2, name2] = mySheet[0];
+
         std::tie(id, abbr, val, name) = mySheet[0];
 
         // or (note: std::ignore)
         // 
-        // std::tie(id, std::ignore, val, name) = mySheet[0];
+        std::tie(id, std::ignore, val, name) = mySheet[0];
 
         std::cout
             << "Id:    " << id << std::endl
